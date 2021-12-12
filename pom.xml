@@ -43,6 +43,18 @@
             <artifactId>rest-assured</artifactId>
             <version>4.3.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -78,6 +90,13 @@
                         <artifactId>aspectjweaver</artifactId>
                         <version>1.9.4</version>
                     </dependency>
+                    <!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
+                    <dependency>
+                        <groupId>com.mashape.unirest</groupId>
+                        <artifactId>unirest-java</artifactId>
+                        <version>1.4.9</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>

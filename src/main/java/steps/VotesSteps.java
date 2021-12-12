@@ -8,14 +8,12 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
 
-import java.net.ResponseCache;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
 
-public class VotestSteps {
+public class VotesSteps {
 
     String key;
     int initialVoteCount=-1;
@@ -65,15 +63,16 @@ public class VotestSteps {
 }
          */
         String requestBody = "{\n" +
-                "  \"image_id\": \"foo\",\n" +
-                "  \"sub_id\": \""+sub_id+"\""+"\n"+
+                "  \"image_id\": \"foo3\",\n" +
+                "  \"sub_id\": \""+sub_id+"\""+",\n"+
                 "  \"value\": \"add\"\n}";
+
 
        try {
            response = given()
                    .headers("x-api-key",key)
-                  // .filter(customLogFilter)
-                   .accept(ContentType.JSON)
+                   .contentType(ContentType.JSON)
+                   .filter(customLogFilter)
                    .and()
                    .body(requestBody)
                    .when()

@@ -14,3 +14,10 @@ Feature: List votes
     Then I see numbers
     When I will create one more vote for this "my-user-1234"
     Then I have numbers plus one votes for this "my-user-1234"
+
+    #image id senaryo taslağından alınacak
+    #sub_id ler senaryo taslağından alınacak
+    # assertion en son vote ettiğim image id benim
+    # get edip boyutunu karşılaştırdığım adımda
+    # o image id mi var diye bakılacak
+
