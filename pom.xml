@@ -52,6 +52,22 @@
                     </argLine>
                 </configuration>
                 <dependencies>
+                    <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+                    <dependency>
+                        <groupId>io.rest-assured</groupId>
+                        <artifactId>rest-assured</artifactId>
+                        <version>4.4.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.rest-assured</groupId>
+                        <artifactId>json-path</artifactId>
+                        <version>4.3.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.rest-assured</groupId>
+                        <artifactId>xml-path</artifactId>
+                        <version>4.3.3</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjweaver</artifactId>

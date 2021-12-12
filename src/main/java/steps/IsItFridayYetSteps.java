@@ -11,6 +11,7 @@ public final class IsItFridayYetSteps {
     private String today;
     private String actualAnswer;
 
+
     @Given("today is Sunday")
     public void today_is_Sunday() {
         today = "Sunday";
