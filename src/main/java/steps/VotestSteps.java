@@ -1,38 +1,106 @@
 package steps;
 
+import filter.CustomLogFilter;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.junit.Assert;
 
+import java.net.ResponseCache;
+import java.util.List;
+
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static io.restassured.RestAssured.baseURI;
 
 public class VotestSteps {
 
     String key;
-    @Given("x-api-key is already acquired.")
-    public void x_api_key_is_already_acquired() {
+    int initialVoteCount=-1;
+
+    Response response;
+    CustomLogFilter customLogFilter ;
+
+
+    @Given("x-api-key and baseURI are already acquired.")
+    public void x_api_key_and_base_uri_are_already_acquired() {
         key = "8adf71fc-c27b-40ef-8662-19ab891129e3";
+        baseURI = "https://api.thedogapi.com/v1/";
+        customLogFilter = new CustomLogFilter();
     }
 
     @When("I check number of votes for this {string}")
     public void i_check_number_of_votes_for_this(String sub_id) {
 
+        //https://api.thedogapi.com/v1/votes?sub_id=my-user-1234
+
+        response = given().headers("x-api-key",key)
+                .accept(ContentType.JSON)
+                .pathParam("sub_id",sub_id)
+                .when()
+                .get("votes?sub_id={sub_id}")
+                .then()
+                .statusCode(200)
+                .extract().response();
     }
 
-    @Then("I see {string}")
-    public void i_see(String string) {
-
+    @Then("I see numbers")
+    public void i_see_numbers() {
+        List voteList = response.getBody().jsonPath().get();
+        initialVoteCount = voteList.size();
     }
 
-    @When("I will create one more vote")
-    public void i_will_create_one_more_vote() {
+    @When("I will create one more vote for this {string}")
+    public void i_will_create_one_more_vote(String sub_id) {
+
+        //https://api.thedogapi.com/v1/votes
+        /*
+
+                {
+  "image_id": "k4vWnFdL2",
+  "sub_id": "my-user-1234",
+  "value": "ad"
+}
+         */
+        String requestBody = "{\n" +
+                "  \"image_id\": \"foo\",\n" +
+                "  \"sub_id\": \""+sub_id+"\""+"\n"+
+                "  \"value\": \"add\"\n}";
+
+       try {
+           response = given()
+                   .headers("x-api-key",key)
+                  // .filter(customLogFilter)
+                   .accept(ContentType.JSON)
+                   .and()
+                   .body(requestBody)
+                   .when()
+                   .post("votes")
+                   .then()
+                   .statusCode(200)
+                   .and()
+                   .contentType(ContentType.JSON)
+                   .extract().response();
+       }catch (AssertionError assertionError){
+           System.out.println(assertionError.getMessage());
+           System.out.println(customLogFilter.getRequestBuilder().toString());
+           System.out.println(customLogFilter.getResponseBuilder().toString());
+       }
+
+
+
 
     }
 
 
     @Then("I have numbers plus one votes for this {string}")
-    public void i_have_numbers_plus_one_votes_for_this(String string) {
-
+    public void i_have_numbers_plus_one_votes_for_this(String sub_id) {
+        i_check_number_of_votes_for_this(sub_id);
+        List voteList = response.getBody().jsonPath().get();
+        int lastVoteCount = voteList.size();
+        Assert.assertTrue(lastVoteCount==initialVoteCount+1);
     }
 
 }
